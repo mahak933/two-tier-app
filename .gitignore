@@ -1,24 +1,21 @@
--- MySQL Database Schema for Todo Application
--- Run this script to create the database and table
+CREATE DATABASE IF NOT EXISTS mydb;
 
--- Create database
-CREATE DATABASE IF NOT EXISTS todo_db;
+USE mydb;
 
--- Use the database
-USE todo_db;
-
--- Create todos table
 CREATE TABLE IF NOT EXISTS todos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     task VARCHAR(255) NOT NULL,
     status ENUM('pending', 'completed') DEFAULT 'pending',
+    deleted BOOLEAN DEFAULT FALSE,              -- Add for soft delete
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL,                  -- Add for soft delete
     INDEX idx_status (status),
-    INDEX idx_created_at (created_at)
+    INDEX idx_created_at (created_at),
+    INDEX idx_deleted (deleted)                 -- Add for soft delete
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insert some sample data (optional)
+-- Sample data
 INSERT INTO todos (task, status) VALUES
     ('Learn Docker basics', 'completed'),
     ('Build Flask application', 'completed'),
@@ -26,9 +23,3 @@ INSERT INTO todos (task, status) VALUES
     ('Create docker-compose.yml', 'pending'),
     ('Push to Docker Hub', 'pending'),
     ('Deploy to production', 'pending');
-
--- Create a database user (optional - for better security)
--- CREATE USER 'todouser'@'%' IDENTIFIED BY 'todopassword';
--- GRANT ALL PRIVILEGES ON todo_db.* TO 'todouser'@'%';
--- FLUSH PRIVILEGES;
-

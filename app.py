@@ -12,7 +12,7 @@ DB_CONFIG = {
     'port': os.environ.get('MYSQL_PORT', '3306'),
     'user': os.environ.get('MYSQL_USER', 'root'),
     'password': os.environ.get('MYSQL_PASSWORD', ''),
-    'database': os.environ.get('MYSQL_DB', 'todo_db')
+    'database': os.environ.get('MYSQL_DB', 'mydb')
 }
 
 def get_db_connection():
@@ -120,7 +120,7 @@ def delete_todo(todo_id):
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("DELETE FROM todos WHERE id = %s", (todo_id,))
+            cursor.execute("UPDATE todos SET deleted = TRUE, deleted_at = NOW() WHERE id = %s", (todo_id,))
             connection.commit()
             flash('Todo deleted successfully!', 'success')
         except Error as e:
@@ -141,6 +141,26 @@ def health():
         connection.close()
         return {'status': 'healthy', 'database': 'connected'}, 200
     return {'status': 'unhealthy', 'database': 'disconnected'}, 503
+
+
+@app.route('/deleted')
+def view_deleted():
+    """View all deleted todos"""
+    connection = get_db_connection()
+    deleted_todos = []
+    
+    if connection:
+        try:
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM todos WHERE deleted = TRUE ORDER BY deleted_at DESC")
+            deleted_todos = cursor.fetchall()
+        except Error as e:
+            flash(f'Error fetching deleted todos: {str(e)}', 'error')
+        finally:
+            cursor.close()
+            connection.close()
+    
+    return render_template('deleted.html', todos=deleted_todos)
 
 if __name__ == '__main__':
     init_db()  # Initialize database on startup
