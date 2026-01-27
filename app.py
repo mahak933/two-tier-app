@@ -55,7 +55,7 @@ def index():
     if connection:
         try:
             cursor = connection.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM todos WHERE deleted = FALSE ORDER BY created_at DESC")
+            cursor.execute("SELECT * FROM todos ORDER BY created_at DESC")
             todos = cursor.fetchall()
         except Error as e:
             flash(f'Error fetching todos: {str(e)}', 'error')
@@ -120,7 +120,7 @@ def delete_todo(todo_id):
     if connection:
         try:
             cursor = connection.cursor()
-            cursor.execute("UPDATE todos SET deleted = TRUE, deleted_at = NOW() WHERE id = %s", (todo_id,))
+            cursor.execute("DELETE FROM todos WHERE id = %s", (todo_id,))
             connection.commit()
             flash('Todo deleted successfully!', 'success')
         except Error as e:
