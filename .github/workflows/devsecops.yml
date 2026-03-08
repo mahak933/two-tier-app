@@ -16,7 +16,7 @@ jobs:
         dependency-scan:
             uses: ./.github/workflows/image-scan.yml
             
-        dockfilelint:
-            uses: ./.github/workflows/dockfilelint.yml
+        dockerlint:
+            uses: ./.github/workflows/dockerlint.yml
 
             
