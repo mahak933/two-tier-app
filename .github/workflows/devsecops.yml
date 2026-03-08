@@ -2,23 +2,21 @@
 name: DevsecOps Workflow
 
 on:   
-    workflow_dispatch:
+    push:
+        branches: [ projecct ]
 
 jobs:
-
-        call-workflow:
-            uses: mahak933/two-tier-app/.github/workflows/code-quality.yml@project
             
         Code-Quality:
-            uses: mahak933/two-tier-app/.github/workflows/code-quality.yml@project
+            uses: ./.github/workflows/code-quality.yml
 
         secrets-scan:
-            uses: mahak933/two-tier-app/.github/workflows/secrets-scan.yml@project
+            uses: ./.github/workflows/secrets-scan.yml
             
         dependency-scan:
-            uses: mahak933/two-tier-app/.github/workflows/dependency-scan.yml@project
+            uses: ./.github/workflows/image-scan.yml
             
         dockfilelint:
-            uses: mahak933/two-tier-app/.github/workflows/dockfilelint.yml@project
+            uses: ./.github/workflows/dockfilelint.yml
 
             
