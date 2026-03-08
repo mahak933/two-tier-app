@@ -1,0 +1,25 @@
+# Scan a dockerfile for issues & CEV vulnerabilities using hadolint. Hadolint is a linter 
+# for Dockerfiles that helps identify potential issues and best practices in Dockerfile syntax 
+# and structure. This workflow will run hadolint on the Dockerfile in the repository to ensure
+# that it follows best practices and does not contain any common mistakes or vulnerabilities.
+
+
+name: DOCKER LINT WORKFLOW
+
+on:
+    workflow_call:
+
+jobs:
+    docker-lint:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: validate Dockerfile using hadolint
+              uses: hadolint/hadolint-action@v2
+              with:
+                dockerfile: Dockerfile
+
+                
+                      
