@@ -5,6 +5,10 @@ on:
     workflow_dispatch:
 
 jobs:
+
+        call-workflow:
+            uses: username/repo/.github/workflows/reusable.yml@project
+            
         Code-Quality:
             uses: ./.github/workflows/code-quality.yml
 
