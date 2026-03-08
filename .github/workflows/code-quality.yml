@@ -1,29 +1,28 @@
 name: Code Quality Workflow
 
 on:
-    workflow_call:
+  workflow_call:   # <-- This makes it a *reusable* workflow, not one you run directly
 
 jobs:
-    code-quality:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                python-version: ['3.11', '3.12', '3.13']
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+  code-quality:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+        
+    steps:
+      - uses: actions/checkout@v4
 
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-            - name: Set up Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v4
-              with:
-                python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-            - name: Install dependencies
-              run: pip install -r requirements.txt
-
-            - name: Run Flake8 for linting
-              run: flake8 app.py
-            
-            - name: Bandit security analysis
-              run: bandit -r app.py
+      - name: Run Flake8 for linting
+        run: flake8 app.py
+          
+      - name: Bandit security analysis
+        run: bandit -r app.py
