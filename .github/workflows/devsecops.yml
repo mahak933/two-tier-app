@@ -7,18 +7,18 @@ on:
 jobs:
 
         call-workflow:
-            uses: username/repo/.github/workflows/reusable.yml@project
+            uses: mahak933/two-tier-app/.github/workflows/code-quality.yml@project
             
         Code-Quality:
-            uses: ./.github/workflows/code-quality.yml
+            uses: mahak933/two-tier-app/.github/workflows/code-quality.yml@project
 
         secrets-scan:
-            uses: ./.github/workflows/secrets-scan.yml
+            uses: mahak933/two-tier-app/.github/workflows/secrets-scan.yml@project
             
         dependency-scan:
-            uses: ./.github/workflows/image-scan.yml
+            uses: mahak933/two-tier-app/.github/workflows/dependency-scan.yml@project
             
         dockfilelint:
-            uses: ./.github/workflows/dockfilelint.yml
+            uses: mahak933/two-tier-app/.github/workflows/dockfilelint.yml@project
 
             
