@@ -3,7 +3,7 @@ name: DevsecOps Workflow
 
 on:   
     push:
-        branches: [ projecct ]
+        branches: [main]
 
 jobs:
             
