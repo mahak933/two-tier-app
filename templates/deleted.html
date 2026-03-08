@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Two-tier-project>>Project:Two-tier->Flask + MySQL - Deleted Todos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .todos-section h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .todo-list {
+            list-style: none;
+        }
+        
+        .todo-item {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .todo-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .todo-item.completed {
+            background: #f8f9fa;
+            opacity: 0.7;
+        }
+        
+        .todo-content {
+            flex: 1;
+        }
+        
+        .todo-task {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .todo-item.completed .todo-task {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        
+        .todo-meta {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .todo-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .empty-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1> Deleted Todos</h1>
+            <p> View your deleted tasks</p>
+        </div>
+        
+        <div class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <div style="margin-bottom: 20px;">
+                <a href="/" class="btn btn-primary">← Back to Active Todos</a>
+            </div>
+            
+            <div class="todos-section">
+                <h2>🗑 Deleted Tasks ({{ todos|length }})</h2>
+                
+                {% if todos %}
+                    <ul class="todo-list">
+                        {% for todo in todos %}
+                            <li class="todo-item {% if todo.status == 'completed' %}completed{% endif %}">
+                                <div class="todo-content">
+                                    <div class="todo-task">{{ todo.task }}</div>
+                                    <div class="todo-meta">
+                                        Created: {{ todo.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                        {% if todo.deleted_at %}
+                                            | Deleted: {{ todo.deleted_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                        {% endif %}
+                                        <span class="todo-status status-{{ todo.status }}">
+                                            {{ todo.status.upper() }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">🗑</div>
+                        <h3>No deleted todos!</h3>
+                        <p>Your deleted tasks will appear here.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

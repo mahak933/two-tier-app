@@ -41,8 +41,12 @@ def init_db():
                     status ENUM('pending', 'completed') DEFAULT 'pending',
                     deleted BOOLEAN DEFAULT FALSE,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    deleted_at TIMESTAMP NULL DEFAULT NULL
-                )
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    deleted_at TIMESTAMP NULL DEFAULT NULL,
+                    INDEX idx_status (status),
+                    INDEX idx_created_at (created_at),
+                    INDEX idx_deleted (deleted)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
                 """
             )
             connection.commit()
@@ -192,4 +196,4 @@ def view_deleted():
 if __name__ == "__main__":
     # Initialize database on startup
     init_db()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(port=5000)
