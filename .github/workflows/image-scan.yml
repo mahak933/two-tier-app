@@ -19,7 +19,7 @@ jobs:
                 password: ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Pull Image
-              run: docker pull ${{ vars.DOCKER_USERNAME }}/two-tier-app:latest
+              run: docker pull ${{ vars.DOCKER_USERNAME }}/two-tier-app_flask-app
 
             - name: Trivy Scanner
               uses: aquasecurity/trivy-action@0.35.0

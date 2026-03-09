@@ -23,7 +23,7 @@ services:
       start_period: 30s
 
   flask-app:
-    image: ${{ vars.DOCKER_USERNAME }}/two-tier-app:latest
+    image: mahak933/two-tier-app_flask-app:latest
     container_name: two-tier-flask-app
     restart: unless-stopped 
     ports:
