@@ -24,7 +24,7 @@ jobs:
     uses: ./.github/workflows/docker-build-push.yml
     secrets: inherit
 
-#   docker-deploy:
-#     needs: docker-build-push
-#     uses: ./.github/workflows/docker-to-server.yml 
-#     secrets: inherit
+  docker-deploy:
+    needs: docker-build-push
+    uses: ./.github/workflows/docker-to-server.yml 
+    secrets: inherit
