@@ -24,4 +24,4 @@ jobs:
                 push: true
                 tags: |
                   ${{ vars.DOCKER_USERNAME }}/two-tier-app_flask-app:latest 
-                  ${{ vars.DOCKER_USER }}/flask-image:${{ github.sha }}        
+                  ${{ vars.DOCKER_USERNAME }}/two-tier-app_flask-app:${{ github.sha }}
