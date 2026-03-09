@@ -31,5 +31,5 @@ jobs:
   
   docker-deploy:
     needs: [image-scan, docker-build-push]
-    uses: ./.github/workflows/docker-to-server.yml 
+    uses: ./.github/workflows/deploy-to-server.yml 
     secrets: inherit
