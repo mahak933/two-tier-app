@@ -20,10 +20,10 @@ jobs:
     secrets: inherit 
   
   docker-build-push:
-    needs:  [secrets-scan, image-scan]
+    needs:  [Code-Quality, secrets-scan, image-scan]
     uses: ./.github/workflows/docker-build-push.yml
     secrets: inherit
-    
+
   docker-deploy:
     needs: docker-build-push
     uses: ./.github/workflows/docker-to-server.yml 
