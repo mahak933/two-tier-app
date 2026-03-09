@@ -1,6 +1,9 @@
 # BASE-IMAGE
 
-FROM python:3.11-slim
+FROM python:3.12-slim
+
+
+RUN apt-get update && rm -rf /var/lib/apt/lists/*
 
 # CREATE A WORKING DIRECTORY
 
@@ -12,7 +15,7 @@ COPY . .
 
 # INSTALLING THE PACKAGES & DEPENDENCIES
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # EXPOSE
 
@@ -20,4 +23,4 @@ EXPOSE 5000
 
 # SERVE THE APPLICATION
 
-CMD ["python","app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
