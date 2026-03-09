@@ -10,21 +10,24 @@ jobs:
 
   secrets-scan:
     uses: ./.github/workflows/secrets-scan.yml
-                        
+                 
+  dependency-scan:
+    uses: ./.github/workflows/dependency-scan.yml
+
   dockerlint:
     uses: ./.github/workflows/dockerlint.yml
 
-  image-scan:
-    needs: [dockerlint]
-    uses: ./.github/workflows/image-scan.yml
-    secrets: inherit 
-  
   docker-build-push:
-    needs:  [Code-Quality, secrets-scan, image-scan]
+    needs:  [Code-Quality, secrets-scan, dependency-scan, dockerlint]
     uses: ./.github/workflows/docker-build-push.yml
     secrets: inherit
 
+  image-scan:
+    needs: [docker-build-push]
+    uses: ./.github/workflows/image-scan.yml
+    secrets: inherit 
+  
   docker-deploy:
-    needs: docker-build-push
+    needs: [image-scan, docker-build-push]
     uses: ./.github/workflows/docker-to-server.yml 
     secrets: inherit
