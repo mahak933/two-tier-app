@@ -1,6 +1,6 @@
 from flask import (
-Flask,render_template, request ,
-redirect, url_for, flash, session
+    Flask, render_template, request,
+    redirect, url_for, flash, session
 )
 
 import os
@@ -16,7 +16,7 @@ DB_CONFIG = {
     "port": os.environ.get("MYSQL_PORT", "3306"),
     "user": os.environ.get("MYSQL_USER", "root"),
     "password": os.environ.get("MYSQL_PASSWORD", ""),
-    "database": os.environ.get("MYSQL_DB", "mydb"),
+    "database": os.environ.get("MYSQL_DB", "mydb")
 }
 
 
@@ -50,7 +50,7 @@ def init_db():
                     INDEX idx_status (status),
                     INDEX idx_created_at (created_at),
                     INDEX idx_deleted (deleted)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
                 COLLATE=utf8mb4_unicode_ci
                 """
             )
@@ -100,7 +100,7 @@ def add_todo():
             cursor = connection.cursor()
             cursor.execute(
                 "INSERT INTO todos (task) VALUES (%s)",
-                (task,),
+                (task,)
             )
             connection.commit()
             flash("Todo added successfully!", "success")
@@ -124,7 +124,7 @@ def complete_todo(todo_id):
             cursor = connection.cursor()
             cursor.execute(
                 "UPDATE todos SET status = 'completed' WHERE id = %s",
-                (todo_id,),
+                (todo_id,)
             )
             connection.commit()
             flash("Todo marked as completed!", "success")
@@ -150,7 +150,7 @@ def delete_todo(todo_id):
                 "UPDATE todos "
                 "SET deleted = TRUE, deleted_at = NOW() "
                 "WHERE id = %s",
-                (todo_id,),
+                (todo_id,)
             )
             connection.commit()
             flash("Todo deleted successfully!", "success")
