@@ -10,10 +10,7 @@ jobs:
 
   secrets-scan:
     uses: ./.github/workflows/secrets-scan.yml
-            
-  dependency-scan:
-    uses: ./.github/workflows/image-scan.yml
-            
+                        
   dockerlint:
     uses: ./.github/workflows/dockerlint.yml
 

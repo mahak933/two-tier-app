@@ -1,6 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-import os
+from flask import (
+Flask,render_template, request ,
+redirect, url_for, flash, session
+)
 
+import os
 import mysql.connector
 from mysql.connector import Error
 
@@ -41,12 +44,14 @@ def init_db():
                     status ENUM('pending', 'completed') DEFAULT 'pending',
                     deleted BOOLEAN DEFAULT FALSE,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    ON UPDATE CURRENT_TIMESTAMP,
                     deleted_at TIMESTAMP NULL DEFAULT NULL,
                     INDEX idx_status (status),
                     INDEX idx_created_at (created_at),
                     INDEX idx_deleted (deleted)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 
+                COLLATE=utf8mb4_unicode_ci
                 """
             )
             connection.commit()
